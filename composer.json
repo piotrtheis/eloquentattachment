@@ -1,0 +1,28 @@
+{
+    "name": "tysdever/eloquent-attachment",
+    "description": "Attaching files into modle",
+    "license" : "MIT",
+    "keywords" : [
+            "laravel",
+            "php",
+            "eloquent"
+    ],
+    "authors": [
+        {
+            "name": "Piotr Theis",
+            "email": "piotr_theis@o2.pl"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "laravel/framework": "5.2.*",
+        "intervention/image": "^2.3",
+        "laravelcollective/html": "5.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tysdever\\EloquentAttachment\\": "src/Attachment/"
+        }
+    },
+    "minimum-stability": "dev"
+}
