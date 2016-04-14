@@ -2,13 +2,12 @@
 
 namespace Tysdever\EloquentAttachment;
 
+use File;
 use InvalidArgumentException;
-use UnexpectedValueException;
-use Tysdever\EloquentAttachment\MimeResolver;
 use Tysdever\EloquentAttachment\EloquentAttachment;
 use Tysdever\EloquentAttachment\Filesystem\UploadedFile;
-use File;
-
+use Tysdever\EloquentAttachment\MimeResolver;
+use UnexpectedValueException;
 
 class AttachmentFactory
 {
@@ -20,15 +19,23 @@ class AttachmentFactory
      */
     protected $resolver;
 
+    /**
+     * ELoquent attachment object
+     * 
+     * @var EloquentAttachment
+     */
+    protected $attachment;
 
     /**
      * Factory constructor
-     * 
+     *
      * @param MimeResolver $resolver [description]
      */
     public function __construct(MimeResolver $resolver, EloquentAttachment $attachment)
     {
         $this->resolver = $resolver;
+
+        $this->attachment = $attachment;
     }
 
     /**
@@ -40,16 +47,17 @@ class AttachmentFactory
      */
     public function factory($path)
     {
-        try{
+        try {
             $file = $this->buildFile($path);
-        } catch (UnexpectedValueException $e){
+        } catch (UnexpectedValueException $e) {
             //avoid Call to a member function on null Error Exception
             $className = __NAMESPACE__ . '\Attachment\AttachmentNotExists';
+
+            //return empty attachment
             return new $className();
         }
-    	
-        $driver = $this->resolver->getFileDriver($file);
 
+        $driver = $this->resolver->getFileDriver($file);
 
         $className = __NAMESPACE__ . '\Attachment\\' . ucfirst($driver);
 
@@ -60,21 +68,33 @@ class AttachmentFactory
         throw new InvalidArgumentException('Missing attachment class.');
     }
 
-
     /**
      * Build file object from tmp file
-     * 
-     * @param  string $path 
+     *
+     * @param  string $path
      * @throws Exception
      * @return UploadedFile
      */
     protected function buildFile($path)
     {
-    	 if (File::exists($path)) {
-    	 	return new UploadedFile($path, '');
-        }
+        //all possible places
+        $paths = [
+            $path,
+            ltrim($this->attachment->getUrlPath() . $path, '/'),
+            $this->attachment->getUrlPath() . $path,
+            ltrim($this->attachment->getTempPath() . $path),
+            $this->attachment->getTempPath() . $path
+        ];
 
-        
-    	throw new UnexpectedValueException("Fiel not found for path: $path");
+
+        //find file
+        foreach($paths as $path){
+            if (File::exists($path)) {
+                return new UploadedFile($path, '');
+            }    
+        }
+         
+
+        throw new UnexpectedValueException("Fiel not found for path: $path");
     }
 }
