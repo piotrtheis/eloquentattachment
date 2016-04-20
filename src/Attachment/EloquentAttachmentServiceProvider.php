@@ -52,8 +52,8 @@ class EloquentAttachmentServiceProvider extends ServiceProvider
 
         
 
-        if (File::exists(resource_path('views/vendor/eloquent-attachment'))) {
-            $this->loadViewsFrom(resource_path('views/vendor/eloquent-attachment'), 'eloquent.attachment');
+        if (File::exists($path = resource_path('views/vendor/tysdever/eloquent-attachment'))) {
+            $this->loadViewsFrom($path, 'eloquent.attachment');
         } else {
             $this->loadViewsFrom(__DIR__ . '/../resource/views/', 'eloquent.attachment');
         }
@@ -85,9 +85,15 @@ class EloquentAttachmentServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/' => config_path(),
-            __DIR__ . '/../resource/views'       => resource_path('views/vendor/eloquent-attachment'),
-            __DIR__ . '/../resource/assets'       => resource_path('assets/vendor/eloquent-attachment'),
-        ]);
+        ], 'config');
+
+        $this->publishes([
+            __DIR__ . '/../resource/views'       => resource_path('views/vendor/tysdever/eloquent-attachment'),
+        ], 'views');
+
+        $this->publishes([
+            __DIR__ . '/../resource/assets'       => resource_path('assets/vendor/tysdever/eloquent-attachment'),
+        ], 'assets');
     }
 
     /**

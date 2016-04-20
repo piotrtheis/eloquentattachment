@@ -1,22 +1,18 @@
-
-
-
-
  <div class="form-group  {{$errors->has($name) ? 'has-error' : null}}">
     {{ Form::label($name, null, ['class' => 'control-label']) }}
     
-    <img 
-    id="eloquent-attachment-image-preview" 
-    class="eloquent-attachment-image-preview" 
-    style="{{ !old('icon_path') ? "display: none" : "" }}"   
-    src="{{ EloquentAttachment::getUrlPath() }}/{{ old($name . EloquentAttachment::getUpdatedFileSuffix()) }}">
+
+    <img id="eloquent-attachment-image-preview"
+        class="eloquent-attachment-image-preview"
+        style="{{ !old('icon_path') ? "display: none" : "" }}"    
+        src="{{ EloquentAttachment::getUrlPath() }}/{{ old($name . EloquentAttachment::getUpdatedFileSuffix()) }}">
 
 
     <div id="eloquent-attachment-image-preview-wrapper" class="eloquent-attachment-image-preview {{ old('icon_path') ? "hidden" : "" }}"></div>
-    
 
     <span class="btn btn-default eloquent-attachment-btn-file">
-    	{{ trans('attachment::attachment.browse-file') }} {{ Form::file($name)}}
+        {{ trans('attachment::attachment.browse-file') }}
+        <input type="file" name="{{ $name }}" accept="image/*" onchange='openFile(event)'>
     </span>
 
     {{ Form::hidden($name . EloquentAttachment::getUpdatedFileSuffix())}}
@@ -26,32 +22,25 @@
 
 
 
+<script>
+  var openFile = function(event) {
+    var input = event.target;
+    var reader = new FileReader();
+    var preview = document.querySelector('#eloquent-attachment-image-preview');
+    var preview_wrapper = document.querySelector('#eloquent-attachment-image-preview-wrapper');
 
 
-   
-   <script type="text/javascript">
+    reader.onload = function(){
+        var dataURL = reader.result;
+        preview.src = dataURL;
 
-        var input = document.querySelector('input[type=file]');
+        preview.style.display = "block";
+        preview_wrapper.style.display = "none";
 
-        input.addEventListener('change', function(){
-            var preview = document.querySelector('#eloquent-attachment-image-preview');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-
-            var preview_wrapper = document.querySelector('#eloquent-attachment-image-preview-wrapper');
-
-            reader.addEventListener("load", function () {
-            preview.src = reader.result;
-            preview.style.display = "block";
-            preview_wrapper.style.display = "none";
-
-          }, false);
-
-          if (file) {
-            reader.readAsDataURL(file);
-          }
-        })
-   </script>
+    };
+    reader.readAsDataURL(input.files[0]);
+  };
+</script>
 
    <style type="text/css">
         .eloquent-attachment-btn-file {
