@@ -12,5 +12,9 @@ class AttachmentNotExists
     }
     
 
+    public function __toString()
+    {
+    	return '';
+    }
 
 }

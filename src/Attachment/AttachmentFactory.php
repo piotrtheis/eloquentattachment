@@ -78,21 +78,21 @@ class AttachmentFactory
     protected function buildFile($path)
     {
         //all possible places
-        $paths = [
-            $path,
-            ltrim($this->attachment->getUrlPath() . $path, '/'),
-            $this->attachment->getUrlPath() . $path,
-            ltrim($this->attachment->getTempPath() . $path),
-            $this->attachment->getTempPath() . $path
-        ];
+        // $paths = [
+        //     $path,
+        //     ltrim($this->attachment->getUrlPath() . $path, '/'),
+        //     $this->attachment->getUrlPath() . $path,
+        //     ltrim($this->attachment->getTempPath() . $path),
+        //     $this->attachment->getTempPath() . $path
+        // ];
 
 
         //find file
-        foreach($paths as $path){
+       // foreach($paths as $path){
             if (File::exists($path)) {
                 return new UploadedFile($path, '');
             }    
-        }
+      //  }
          
 
         throw new UnexpectedValueException("Fiel not found for path: $path");
