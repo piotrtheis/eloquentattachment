@@ -84,22 +84,22 @@ trait FormFileRequestPopulate {
      * @param  string|array|null  $default
      * @return string|array
      */
-    public function input($key = null, $default = null)
-    {
-        $input = $this->getInputSource()->all() + $this->query->all();
+    // public function input($key = null, $default = null)
+    // {
+    //     $input = $this->getInputSource()->all() + $this->query->all();
 
 
-        foreach($this->attachmentRules() as $fileName => $rule)
-        {
-        	$replace = $fileName . EloquentAttachment::getUpdatedFileSuffix();
+    //     foreach($this->attachmentRules() as $fileName => $rule)
+    //     {
+    //     	$replace = $fileName . EloquentAttachment::getUpdatedFileSuffix();
 
-        	if(array_key_exists($replace, $input))
-        	{
-        		$input[$replace] = AttachmentFactory::factory($input[$replace]);
-        	}
-        }
+    //     	if(array_key_exists($replace, $input))
+    //     	{
+    //     		$input[$replace] = AttachmentFactory::factory($input[$replace]);
+    //     	}
+    //     }
 
-        return data_get($input, $key, $default);
-    }
+    //     return data_get($input, $key, $default);
+    // }
 
 }

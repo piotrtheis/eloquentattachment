@@ -9,7 +9,7 @@ use Tysdever\EloquentAttachment\Filesystem\UploadedFile;
 class Image extends Attachment
 {
 
-    protected $image;
+    public $image;
 
     public function __construct(UploadedFile $file)
     {
