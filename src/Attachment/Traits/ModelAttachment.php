@@ -45,16 +45,20 @@ trait ModelAttachment
      */
     public function fill(array $attributes)
     {
-    	$tempPath = EloquentAttachment::getTempPath();
+
+
+
+    	$tempPath = EloquentAttachment::getUrlPath();
     	$fileSuffix = EloquentAttachment::getUpdatedFileSuffix();
 
         foreach ($this->attachedFiles as $file) {
             if (array_key_exists($file . $fileSuffix, $attributes)) {
-                $attributes[$file] = $tempPath . $attributes[$file . $fileSuffix];
+                $attributes[$file] =  ltrim($tempPath . str_replace($tempPath, '', $attributes[$file . $fileSuffix]), '/');
             }
         }
 
         parent::fill($attributes);
+
 
         return $this;
     }
@@ -75,5 +79,4 @@ trait ModelAttachment
 
         return parent::getAttribute($key);
     }
-
 }

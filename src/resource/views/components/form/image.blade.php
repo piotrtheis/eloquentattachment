@@ -4,22 +4,29 @@
 
     <img id="eloquent-attachment-image-preview"
         class="eloquent-attachment-image-preview"
-        style="{{ !old('icon_path') ? "display: none" : "" }}"    
-        src="{{ EloquentAttachment::getUrlPath() }}/{{ old($name . EloquentAttachment::getUpdatedFileSuffix()) }}">
+        style="{{ (!old('icon_path') && !$value) ? "display: none" : "" }}"    
+        src="<?php
+            if((bool)old($name . EloquentAttachment::getUpdatedFileSuffix()))
+            {
+                echo EloquentAttachment::getUrlPath() . '/' . old($name . EloquentAttachment::getUpdatedFileSuffix());                    
+            } else {
+                echo $value;
+            }
+        ?>">
 
 
-    <div id="eloquent-attachment-image-preview-wrapper" class="eloquent-attachment-image-preview {{ old('icon_path') ? "hidden" : "" }}"></div>
+    <div id="eloquent-attachment-image-preview-wrapper" class="eloquent-attachment-image-preview {{ (old('icon_path') || $value) ? "hidden" : "" }}"></div>
 
     <span class="btn btn-default eloquent-attachment-btn-file">
         {{ trans('attachment::attachment.browse-file') }}
         <input type="file" name="{{ $name }}" accept="image/*" onchange='openFile(event)'>
     </span>
 
-    {{ Form::hidden($name . EloquentAttachment::getUpdatedFileSuffix())}}
+    {{ Form::hidden($name . EloquentAttachment::getUpdatedFileSuffix(), $value, ['id' => 'eloquent-attachment-image-url-wrapper'])}}
+
 
     <span class="help-block">{{$errors->first($name)}}</span>
 </div>
-
 
 
 <script>

@@ -1,3 +1,4 @@
+var input = document.querySelector('input[type=file]');
  
  var input = document.querySelector('input[type=file]');
 

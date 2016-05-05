@@ -117,7 +117,7 @@ class EloquentAttachmentServiceProvider extends ServiceProvider
 
         $form = $this->app->make('form');
 
-        $form::component('bsImageAttachment', 'eloquent.attachment::components.form.image', ['name']);
+        $form::component('bsImageAttachment', 'eloquent.attachment::components.form.image', ['name', 'value']);
     }
 
 

@@ -42,7 +42,7 @@ class Attachment
 
     public function __toString()
     {
-        return $this->url($this->uploadedFile->getPathname());
+        return '/' . $this->url($this->uploadedFile->getPathname());
     }
 
     protected function url($path)

@@ -26,11 +26,14 @@ trait FormFileRequestPopulate {
 
 		$errors = [];
 
+
+
 		if (!$instance->passes()) {
 			$errors = $this->formatErrors($instance);
 		}
 
 		if ($attachment->passes()) {
+
 			EloquentAttachment::upload();
 		} else {
 			if (!EloquentAttachment::isUploaded()) {
